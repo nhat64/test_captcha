@@ -1,0 +1,72 @@
+<!-- <!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>reCAPTCHA Box Test</title>
+    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+    <script>
+        function onloadCallback() {
+            grecaptcha.render('recaptcha-box', {
+                'sitekey': '6Le2UmorAAAAAKyrHKDiu8lx_owlZp6qW51qV_Ge',
+                'callback': function (token) {
+                    // Gửi token về Swift trong WebView iOS
+                    if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.recaptcha) {
+                        window.webkit.messageHandlers.recaptcha.postMessage(token);
+                    } else {
+                        alert("Token: " + token);
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <h2>Xác minh reCAPTCHA</h2>
+    <div id="recaptcha-box"></div>
+</body>
+
+</html> -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Invisible reCAPTCHA Test</title>
+    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+    <script>
+        let widgetId;
+
+        function onloadCallback() {
+            widgetId = grecaptcha.render('submit-btn', {
+                'sitekey': '6LekZWorAAAAAOdadxkMVFJM7QAz-fXDL6mF0bhb',
+                'callback': function (token) {
+                    try {
+                        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.recaptcha) {
+                            window.webkit.messageHandlers.recaptcha.postMessage(token);
+                        } else {
+                            alert("Token: " + token);
+                        }
+                    } catch (e) {
+                        alert("Token: " + token);
+                    }
+                },
+                'size': 'invisible',
+                'badge': 'bottomright' // hoặc 'inline' nếu bạn muốn ẩn badge
+            });
+        }
+
+        function onClick() {
+            grecaptcha.execute(widgetId);
+        }
+    </script>
+</head>
+
+<body style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh;">
+    <h2>Xác minh bằng Invisible reCAPTCHA</h2>
+    <button id="submit-btn" onclick="onClick()">Xác minh</button>
+</body>
+
+</html>
