@@ -5,6 +5,27 @@
     <meta charset="UTF-8">
     <title>reCAPTCHA Box Test</title>
     <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+
+    <style>
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-family: sans-serif;
+        }
+
+        #recaptcha-box {
+            margin-top: 16px;
+        }
+    </style>
+
     <script>
         function onloadCallback() {
             grecaptcha.render('recaptcha-box', {
