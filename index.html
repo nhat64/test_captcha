@@ -1,4 +1,4 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -25,105 +25,6 @@
 <body>
     <h2>Xác minh reCAPTCHA</h2>
     <div id="recaptcha-box"></div>
-</body>
-
-</html> -->
-
-
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8" />
-    <title>Invisible reCAPTCHA Test</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
-    <script>
-        var widgetId;
-
-        var onloadCallback = function () {
-            widgetId = grecaptcha.render('captcha', {
-                sitekey: '6LekZWorAAAAAOdadxkMVFJM7QAz-fXDL6mF0bhb', // 👈 Thay bằng site key của bạn
-                size: 'invisible',
-                callback: onCaptchaVerified,
-                'error-callback': onCaptchaError
-            });
-
-            console.log("✅ CAPTCHA đã sẵn sàng.");
-            if (window.webkit?.messageHandlers?.recaptcha) {
-                window.webkit.messageHandlers.recaptcha.postMessage("READY");
-            }
-        };
-
-        function onCaptchaVerified(token) {
-            console.log("✅ CAPTCHA thành công:", token);
-            if (window.webkit?.messageHandlers?.recaptcha) {
-                window.webkit.messageHandlers.recaptcha.postMessage(token);
-            }
-        }
-
-        function onCaptchaError() {
-            console.error("❌ CAPTCHA thất bại!");
-            if (window.webkit?.messageHandlers?.recaptcha) {
-                window.webkit.messageHandlers.recaptcha.postMessage("ERROR_CAPTCHA_FAILED");
-            }
-        }
-
-        function executeCaptcha() {
-            try {
-                grecaptcha.execute(widgetId);
-            } catch (e) {
-                console.error("⚠️ CAPTCHA chưa sẵn sàng. " + e.message);
-            }
-        }
-
-        function resetCaptcha() {
-            try {
-                grecaptcha.reset(widgetId);
-                console.log("🔄 CAPTCHA đã được reset.");
-            } catch (e) {
-                console.error("⚠️ Lỗi khi reset CAPTCHA: " + e.message);
-            }
-        }
-
-        function clearCacheAndReload() {
-            localStorage.clear();
-            sessionStorage.clear();
-            caches.keys().then(function (names) {
-                for (let name of names) caches.delete(name);
-            });
-            alert("🧹 Đã xoá cache, localStorage và sessionStorage.\nĐang reload...");
-            setTimeout(() => location.reload(true), 500);
-        }
-    </script>
-
-    <style>
-        body {
-            font-family: system-ui, sans-serif;
-            text-align: center;
-            padding: 40px;
-        }
-
-        button {
-            margin: 8px;
-            padding: 12px 24px;
-            font-size: 16px;
-        }
-
-        .grecaptcha-badge {
-            visibility: hidden;
-        }
-    </style>
-</head>
-
-<body>
-    <h2>🧪 Test Invisible reCAPTCHA</h2>
-
-    <div id="captcha"></div>
-
-    <button onclick="executeCaptcha()">▶️ Kích hoạt CAPTCHA</button>
-    <button onclick="resetCaptcha()">🔄 Reset CAPTCHA</button>
-    <button onclick="clearCacheAndReload()">🧹 Xoá cache + reload</button>
 </body>
 
 </html>
