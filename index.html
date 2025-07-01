@@ -29,49 +29,8 @@
 
 </html> -->
 
+
 <!-- <!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="UTF-8">
-    <title>Invisible reCAPTCHA Test</title>
-    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
-    <script>
-        let widgetId;
-
-        function onloadCallback() {
-            widgetId = grecaptcha.render('submit-btn', {
-                'sitekey': '6LekZWorAAAAAOdadxkMVFJM7QAz-fXDL6mF0bhb',
-                'callback': function (token) {
-                    try {
-                        if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.recaptcha) {
-                            window.webkit.messageHandlers.recaptcha.postMessage(token);
-                        } else {
-                            alert("Token: " + token);
-                        }
-                    } catch (e) {
-                        alert("Token: " + token);
-                    }
-                },
-                'size': 'invisible',
-                'badge': 'bottomright' // hoặc 'inline' nếu bạn muốn ẩn badge
-            });
-        }
-
-        function onClick() {
-            grecaptcha.execute(widgetId);
-        }
-    </script>
-</head>
-
-<body style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100vh;">
-    <h2>Xác minh bằng Invisible reCAPTCHA</h2>
-    <button id="submit-btn" onclick="onClick()">Xác minh</button>
-</body>
-
-</html> -->
-
-<!DOCTYPE html>
 <html>
 
 <head>
@@ -153,13 +112,93 @@
 <body>
     <h2>🧪 Test Invisible reCAPTCHA</h2>
 
-    <!-- CAPTCHA placeholder -->
     <div id="captcha"></div>
 
-    <!-- Các nút test (sẽ xoá sau khi tích hợp iOS) -->
     <button onclick="executeCaptcha()">▶️ Kích hoạt CAPTCHA</button>
     <button onclick="resetCaptcha()">🔄 Reset CAPTCHA</button>
     <button onclick="clearCacheAndReload()">🧹 Xoá cache + reload</button>
+</body>
+
+</html> -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Invisible reCAPTCHA Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer></script>
+
+    <script>
+        var widgetId;
+
+        var onloadCallback = function () {
+            widgetId = grecaptcha.render('captcha', {
+                sitekey: '6LekZWorAAAAAOdadxkMVFJM7QAz-fXDL6mF0bhb', // Thay bằng site key thật
+                size: 'invisible',
+                callback: onCaptchaVerified,
+                'error-callback': onCaptchaError
+            });
+
+            // ✅ Gửi tín hiệu về Swift khi CAPTCHA sẵn sàng
+            if (window.webkit?.messageHandlers?.recaptcha) {
+                window.webkit.messageHandlers.recaptcha.postMessage("READY");
+                console.log("✅ CAPTCHA đã sẵn sàng.");
+            }
+        };
+
+        function onCaptchaVerified(token) {
+            if (window.webkit?.messageHandlers?.recaptcha) {
+                window.webkit.messageHandlers.recaptcha.postMessage(token);
+                console.log("✅ CAPTCHA thành công:", token);
+            }
+        }
+
+        function onCaptchaError() {
+            if (window.webkit?.messageHandlers?.recaptcha) {
+                window.webkit.messageHandlers.recaptcha.postMessage("ERROR_CAPTCHA_FAILED");
+                console.log("⚠️ CAPTCHA thất bại, thử lại sau.");
+            }
+        }
+
+        function executeCaptcha() {
+            try {
+                grecaptcha.execute(widgetId);
+            } catch (e) {
+                window.webkit.messageHandlers.recaptcha.postMessage("ERROR_CAPTCHA_NOT_READY: " + e.message);
+                console.log("⚠️ CAPTCHA chưa sẵn sàng. " + e.message);
+            }
+        }
+
+        function resetCaptcha() {
+            try {
+                grecaptcha.reset(widgetId);
+                console.log("🔄 CAPTCHA đã được reset.");
+            } catch (e) {
+                console.log("⚠️ Lỗi khi reset CAPTCHA: " + e.message);
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .grecaptcha-badge {
+            visibility: hidden;
+        }
+
+        /* Ẩn icon badge nếu muốn */
+    </style>
+</head>
+
+<body>
+    <div id="captcha"></div>
+    <button onclick="executeCaptcha()">▶️ Kích hoạt CAPTCHA</button>
+    <button onclick="resetCaptcha()">🔄 Reset CAPTCHA</button>
 </body>
 
 </html>
