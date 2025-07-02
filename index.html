@@ -14,6 +14,7 @@
             justify-content: center;
             height: 100vh;
             margin: 0;
+            font-family: sans-serif;
         }
 
         h2 {
@@ -23,22 +24,36 @@
         #recaptcha-box {
             width: 100%;
             max-width: 400px;
-            /* Giới hạn chiều rộng của box */
-            padding: 20px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        button {
+            padding: 10px 16px;
+            font-size: 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background-color: #4285f4;
+            color: white;
+        }
+
+        button:hover {
+            background-color: #3367d6;
         }
     </style>
 
     <script>
+        let widgetId;
+
         function onloadCallback() {
-            grecaptcha.render('recaptcha-box', {
+            widgetId = grecaptcha.render('recaptcha-box', {
                 'sitekey': '6Le2UmorAAAAAKyrHKDiu8lx_owlZp6qW51qV_Ge',
                 'callback': function (token) {
-                    // Gửi token về Swift trong WebView iOS
                     if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.recaptcha) {
                         window.webkit.messageHandlers.recaptcha.postMessage(token);
                     } else {
@@ -47,12 +62,27 @@
                 }
             });
         }
+
+        function resetRecaptcha() {
+            if (typeof widgetId !== 'undefined') {
+                grecaptcha.reset(widgetId);
+            }
+        }
+
+        function reloadPage() {
+            location.reload();
+        }
     </script>
 </head>
 
 <body>
     <h2>Xác minh reCAPTCHA</h2>
     <div id="recaptcha-box"></div>
+
+    <div class="buttons">
+        <button onclick="resetRecaptcha()">Reset CAPTCHA</button>
+        <button onclick="reloadPage()">Reload Trang</button>
+    </div>
 </body>
 
 </html>
