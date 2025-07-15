@@ -22,16 +22,11 @@
             transform: scale(2.8);
         }
 
-        #recaptcha_image img {
-            width: 193px;
-            height: 57px;
-            border: solid 1px #ae0b31;
-        }
-
-        #recaptcha_image {
-            width: 193px;
-            height: 57px;
-            margin: 3px 0 5px 0;
+        #recaptcha-container {
+            transform: scale(2);
+            -webkit-transform: scale(2);
+            transform-origin: 0 0;
+            -webkit-transform-origin: 0 0;
         }
     </style>
 
@@ -41,7 +36,7 @@
         function onloadCallback() {
             widgetId = grecaptcha.render('recaptcha-box', {
                 'sitekey': '6Le2UmorAAAAAKyrHKDiu8lx_owlZp6qW51qV_Ge',
-                'size': 'compact',
+                'size': 'normal',
                 'callback': function (token) {
                     if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.recaptcha) {
                         window.webkit.messageHandlers.recaptcha.postMessage(token);
