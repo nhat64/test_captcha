@@ -41,7 +41,7 @@
         function onloadCallback() {
             widgetId = grecaptcha.render('recaptcha-box', {
                 'sitekey': '6Le2UmorAAAAAKyrHKDiu8lx_owlZp6qW51qV_Ge',
-                'size': 'normal',
+                'size': 'compact',
                 'callback': function (token) {
                     if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.recaptcha) {
                         window.webkit.messageHandlers.recaptcha.postMessage(token);
