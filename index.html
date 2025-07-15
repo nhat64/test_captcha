@@ -16,15 +16,22 @@
             justify-content: center;
         }
 
-        h1 {
-            font-size: 48px;
-            margin-bottom: 40px;
-        }
-
         #recaptcha-box {
             display: inline-block;
             transform-origin: top center;
             transform: scale(2.8);
+        }
+
+        #recaptcha_image img {
+            width: 193px;
+            height: 57px;
+            border: solid 1px #ae0b31;
+        }
+
+        #recaptcha_image {
+            width: 193px;
+            height: 57px;
+            margin: 3px 0 5px 0;
         }
     </style>
 
@@ -58,9 +65,7 @@
 </head>
 
 <body>
-    <h1>reCAPTCHA</h1>
     <div id="recaptcha-box"></div>
-
     <div hidden>
         <button onclick="resetRecaptcha()">Reset CAPTCHA</button>
         <button onclick="reloadPage()">Reload Trang</button>
